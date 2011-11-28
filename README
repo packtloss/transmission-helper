@@ -1,0 +1,6 @@
+rss.php 		- rss feed parser
+transprocessor.php 	- called by transmission when download is completed. UnRars files, joins cd1/cd2 avis, etc
+cleanup.php 		- cleans up extracted files, removes old torrents, etc.
+edit.php		- web-based file editor for rss.php's support files
+config.example.inc.php	- example config file, rename config.inc.php
+
