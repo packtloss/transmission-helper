@@ -1,6 +1,36 @@
 rss.php 		- rss feed parser
 transprocessor.php 	- called by transmission when download is completed. UnRars files, joins cd1/cd2 avis, etc
-cleanup.php 		- cleans up extracted files, removes old torrents, etc.
+transcleanup.php 	- cleans up extracted files, removes old torrents, etc.
 edit.php		- web-based file editor for rss.php's support files
-config.example.inc.php	- example config file, rename config.inc.php
+config.inc.php		- example config file, rename config.inc.php
+www/index.php		- simple editor for search strings in the rss parser.
+
+Requires PHP 5.3 with stuff.
+Uses php-transmission-class - http://code.google.com/p/php-transmission-class/
+Assumes php,unrar,mencoder binaries found in /usr/bin/ 
+Assumes transmission daemon is running locally.
+
+Crontab the cleanup script - can run as often as you want. Once per day is likely enough.
+Torrents that are stopped, Torrents older than maximum age:
+* extracted files/directories/symlinks, download directory.
+* Removes the torrent from transmission.
+Example:
+	0 * * * * /path/to/transcleanup.php
+
+transProccessor:
+Executed by transmission when a download is completed. 
+Looks for rar files, etc - extracts them to the extract directory.
+With mencoder, and joinavis enabled, will attempt to join AVI files after extraction.
+Extracts subtitles, etc.
+Doesnt know how to handle much more than rar files. Creates a symlink if it cant handle the input files.
+
+Edit your transmission daemon settings.json:
+* Set "script-torrent-done-enabled": to true.
+* Set "script-torrent-done-filename": to reflect the processor path
+Example:
+    "script-torrent-done-enabled": true,
+    "script-torrent-done-filename": "/path/to/transprocessor",
+
+RSS Example: (You will have to hack up rss.php, before you bother with this, unless you use the same site i do)
+0,30 * * * * /path/to/rss.php
 
