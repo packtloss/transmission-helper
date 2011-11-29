@@ -1,7 +1,7 @@
 #!/usr/bin/php -q
 <?php
 require_once(dirname( __FILE__ ).'/includes/config.inc.php');
-require_once($baseDirectory. '/includes/functions.general.inc.php');
+require_once(dirname( __FILE__ ).'/includes/functions.general.inc.php');
 
 // Environment Variables set by transmission - We dont use them all (yet?)
 $torrentName = $_SERVER['TR_TORRENT_NAME'];
