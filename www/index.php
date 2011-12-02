@@ -6,7 +6,6 @@ if(!$_POST['editmode']) {
 	$editMode = "view";
 } else {
 	$newShows = $_POST['newshows'];
-	$newCategories = $_POST['newcategories'];
 	$newIgnores = $_POST['newignores'];
 	$editMode = $_POST['editmode'];
 }
@@ -15,7 +14,6 @@ if($editMode == "save") {
 	$logData = "";
 	$logData = "[".date('M n g:i:sa')."][WEBEDIT]";
 	file_put_contents($allowedShows,$newShows, LOCK_EX);
-	file_put_contents($allowedCategories,$newCategories, LOCK_EX);
 	file_put_contents($ignoredStrings,$newIgnores, LOCK_EX);
 	//file_put_contents($logFile, $logData, FILE_APPEND | LOCK_EX);
 }
@@ -26,12 +24,6 @@ if ($fp) {
         $shows = explode("\n", file_get_contents($allowedShows));
 	$shows = array_unique($shows);
 }
-// Define allowed categories
-$fp = @fopen($allowedCategories, 'r');
-if ($fp) {
-        $categories = explode("\n", file_get_contents($allowedCategories));
-	$categories = array_unique($categories);
-}
 // Define cockblocking strings
 $fp = @fopen($ignoredStrings, 'r');
 if ($fp) {
@@ -39,7 +31,6 @@ if ($fp) {
 	$ignores = array_unique($ignores);
 }
 $showCount = sizeof($shows);
-$catCount = sizeof($categories);
 $ignoreCount = sizeof($ignores);
 
 include(dirname(__FILE__).'/../includes/header-www.inc.php');
@@ -53,7 +44,6 @@ Search Strings:<br />
 <?php
 sort($shows);
 sort($ignores);
-sort($categories);
 $counter=0;
 foreach($shows as $show) {
 	$show = trim($show);
@@ -73,19 +63,6 @@ foreach($ignores as $ignore) {
 	$ignore = trim($ignore);
         $counter++;
         if($counter != $ignoreCount) { echo $ignore."\n"; } else { echo $ignore; }
-}
-?>
-</textarea>
-<br />
-
-Category Strings:<br />
-<textarea cols=100 rows=<?=$catCount?> name="newcategories">
-<?php
-$counter=0;
-foreach($categories as $category) {
-	$category = trim($category);
-        $counter++;
-        if($counter != $catCount) { echo $category."\n"; } else { echo $category; }
 }
 ?>
 </textarea>

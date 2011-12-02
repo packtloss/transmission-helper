@@ -1,4 +1,4 @@
-config.inc.php
+includes/config.inc.php
 *.log
 log/*
 !.gitignore
