@@ -9,7 +9,6 @@ $rpc = new TransmissionRPC();
 $rpc->username = '$transmissionUser';
 $rpc->password = '$transmissionPass';
 $rpc->url = '$transmissionUrl';
-
 //$rpc->debug = true;
 $result = $rpc->get();
 $logData = "";
@@ -34,7 +33,6 @@ foreach($result->arguments->torrents as $torrentData) {
 		$logData .= "[Torrent:".strtoupper($removeResult->result)."]";
 		$logData .= "[T:".$torrentSize."]";
 		$extractedDir = $unrarDir."/".$torrentName;
-		// Sanity Check...
 		if(!empty($torrentName)) {
 			// See if there's an extract dir...
 			if(!is_link($extractedDir) && !is_dir($extractedDir)) { $logData .= "[EX:NODATA]"; }
@@ -56,5 +54,4 @@ foreach($result->arguments->torrents as $torrentData) {
 $logData .= "[".date('M n g:i:sa')."][CLEANUP][Queue Total:".formatBytes($torrentTotal)."][Removed: ".$removed."]\n";
 echo $logData;
 file_put_contents($logFile, $logData, FILE_APPEND | LOCK_EX);
-
 ?>

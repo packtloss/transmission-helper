@@ -2,7 +2,6 @@
 <?php
 require_once(dirname( __FILE__ ).'/includes/config.inc.php');
 require_once(dirname( __FILE__ ).'/includes/functions.general.inc.php');
-
 // Environment Variables set by transmission - We dont use them all (yet?)
 $torrentName = $_SERVER['TR_TORRENT_NAME'];
 $torrentHash = $_SERVER['TR_TORRENT_HASH'];
@@ -10,7 +9,6 @@ $torrentTime = $_SERVER['TR_TIME_LOCALTIME'];
 $torrentAppVersion = $_SERVER['TR_APP_VERSION'];
 $torrentTorrentId = $_SERVER['TR_TORRENT_ID'];
 $torrentDirectory = $_SERVER['TR_TORRENT_DIR'];
-
 // ---
 $torrentDownloadDir = $torrentDirectory."/".$torrentName;
 $torrentDestination = $unrarDir."/".$torrentName;
@@ -19,7 +17,7 @@ $mtime = microtime();
 $mtime = explode(" ",$mtime); 
 $mtime = $mtime[1] + $mtime[0]; 
 $starttime = $mtime;
-
+//
 $parts = findFiles($torrentDownloadDir,'*part01*',0);
 if(!empty($parts[0])) {
 	// There are part01 files - subs later
@@ -45,7 +43,6 @@ if(!empty($parts[0])) {
 		}
 	}
 }
-
 // Check the download directory for leftover rars - extract and delete.
 if(is_dir($torrentDestination) && !is_link($torrentDestination)) {
 	//echo "\nDestination is Real\n";
@@ -58,28 +55,21 @@ if(is_dir($torrentDestination) && !is_link($torrentDestination)) {
 		}
 	}
 }
-
-
 // If There's cd1.avi cd2.avi files, log them for join attempts...
 $joinedName = $torrentDestination."/".$torrentName.".avi";
 $logData .= joinAvi($torrentDestination,$joinedName);
-
 // If we didnt make a directory, symlink the download directory...
 if(!is_dir($torrentDestination) && !is_link($torrentDestination)) {
         $logData .= "[LNK]";
         symlink($torrentDownloadDir,$torrentDestination);
 }
-
 // End Logging
 $mtime = microtime(); 
 $mtime = explode(" ",$mtime); 
 $mtime = $mtime[1] + $mtime[0]; 
 $endtime = $mtime; 
 $totaltime = ($endtime - $starttime); 
-
 $logData .= "[".substr($totaltime,0,5)."s]\n";
 file_put_contents($logFile, $logData, FILE_APPEND | LOCK_EX);
-
-
 ?>
 

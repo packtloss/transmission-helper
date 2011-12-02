@@ -1,9 +1,8 @@
 <?
 function arginput($opts) {
-        // expects $opts = getopt('hd');
-        // Defaults
         $output['level'] = 0;
         $output['help'] = 0;
+	$output['xmlpath'] = "";
         foreach (array_keys($opts) as $opt) {
                 switch ($opt) {
                         case 'd':
@@ -12,12 +11,14 @@ function arginput($opts) {
                         case 'h':
                                 $output['help'] = 1;
                                 break;
+			case 'x':
+				$output['xmlpath'] = $opts['x'];
+				break;
                         default:
                                 $output['level'] = 0;
                                 $output['help'] = 0;
                 }
         }
-
         return $output;
 }
 
@@ -31,7 +32,6 @@ function climsg($input,$level=0,$log=0) {
 	}
 }
 
-
 function msg($input,$runlevel=0,$msglevel=1,$log=0) {
 	if($runlevel >= $msglevel) {
 		echo $input."\n";
@@ -40,5 +40,4 @@ function msg($input,$runlevel=0,$msglevel=1,$log=0) {
                 file_put_contents($log, $input."\n", FILE_APPEND | LOCK_EX);
         }
 }
-
 ?>
