@@ -56,8 +56,10 @@ if(is_dir($torrentDestination) && !is_link($torrentDestination)) {
 	}
 }
 // If There's cd1.avi cd2.avi files, log them for join attempts...
-$joinedName = $torrentDestination."/".$torrentName.".avi";
-$logData .= joinAvi($torrentDestination,$joinedName);
+if($joinAviFiles == 1) {
+	$joinedName = $torrentDestination."/".$torrentName.".avi";
+	$logData .= joinAvi($torrentDestination,$joinedName);
+}
 // If we didnt make a directory, symlink the download directory...
 if(!is_dir($torrentDestination) && !is_link($torrentDestination)) {
         $logData .= "[LNK]";
