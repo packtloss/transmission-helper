@@ -1,4 +1,5 @@
 <?
+date_default_timezone_set('America/America/New_York');
 
 // Maximum age in days, before a torrent is deleted.
 $maxTorrentAge = 30;
