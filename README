@@ -8,22 +8,23 @@ Requires PHP 5.3 with stuff.
 Uses php-transmission-class - http://code.google.com/p/php-transmission-class/
 Assumes php,unrar,mencoder binaries found in /usr/bin/ 
 
-Edit includes/config.inc.php.example, save as includes/config.inc.php
+Basic Stuff:
+* Edit includes/config.inc.php.example, save as includes/config.inc.php
 
 TransCleanup:
 Crontab the cleanup script - can run as often as you want. Once per day is likely enough.
 Example:
 	0 * * * * /path/to/transcleanup.php
 On torrents that are stopped and/or Torrents older than maximum age:
-* extracted files/directories/symlinks are deleted.
-* transmission is told to delete the torrent and downloaded files.
+- extracted files/directories/symlinks are deleted.
+- transmission is told to delete the torrent and downloaded files.
 
 TransProccessor:
-Executed by transmission when a download is completed. 
-Looks for rar files, etc - extracts them to the extract directory.
-With mencoder, and JOIN_AVI (config file) enabled, will attempt to join AVI files after extraction.
-Extracts subtitles, etc.
-Doesnt know how to handle much more than rar files. Creates a symlink if it cant handle the input files.
+- Executed by transmission when a download is completed. 
+- Looks for rar files, etc - extracts them to the extract directory.
+- With mencoder, and JOIN_AVI (config file) enabled, will attempt to join AVI files after extraction.
+- Extracts subtitles, etc.
+- Doesnt know how to handle much more than rar files. Creates a symlink if it cant handle the input files.
 
 Edit your transmission daemon settings.json:
 * Set "script-torrent-done-enabled": to true.
@@ -33,11 +34,20 @@ Example:
     "script-torrent-done-filename": "/path/to/transprocessor",
 (Dont forget to properly hup/reload transmission, or your changes will not be loaded and will be removed)
 
+RSS Parser:
+rss.php
 RSS Example: 
 	0,30 * * * * /path/to/rss.php -u "http://www.whatever.com/feed.rss"
-rss reader looks for mainly <title> and <link> fields. should work for your rss feed if those are there.
-To see more debug info, /path/to/rss.php -u "http://www.whatever.com/feed.rss" -d 2
-Dont bother adding to cron until you know if it works. 
+- rss reader looks for mainly <title> and <link> fields. should work for your rss feed if those are there.
+- To see more debug info, /path/to/rss.php -u "http://www.whatever.com/feed.rss" -d 2
+- Dont bother adding to cron until you know if it works. (run manually)
+
+www/index.php
+* Make web accessible. 
+* Make sure web user can read/write includes/file.types.inc.php, includes/file.ignores.inc.php
+* Add an .htaccess password file etc
+Simply reads/writes file.* files, allows quick/dirty editing from web.
+Also reads includes/header-www.inc.php and includes/footer-www.inc.php - edit at will.
 
 
 TODO
