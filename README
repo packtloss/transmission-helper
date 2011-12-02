@@ -1,26 +1,27 @@
 rss.php 		- rss feed parser
 transprocessor.php 	- called by transmission when download is completed. UnRars files, joins cd1/cd2 avis, etc
 transcleanup.php 	- cleans up extracted files, removes old torrents, etc.
-edit.php		- web-based file editor for rss.php's support files
 config.inc.php		- example config file, rename config.inc.php
 www/index.php		- simple editor for search strings in the rss parser.
 
 Requires PHP 5.3 with stuff.
 Uses php-transmission-class - http://code.google.com/p/php-transmission-class/
 Assumes php,unrar,mencoder binaries found in /usr/bin/ 
-Assumes transmission daemon is running locally.
 
+Edit includes/config.inc.php.example, save as includes/config.inc.php
+
+TransCleanup:
 Crontab the cleanup script - can run as often as you want. Once per day is likely enough.
-Torrents that are stopped, Torrents older than maximum age:
-* extracted files/directories/symlinks, download directory.
-* Removes the torrent from transmission.
 Example:
 	0 * * * * /path/to/transcleanup.php
+On torrents that are stopped and/or Torrents older than maximum age:
+* extracted files/directories/symlinks are deleted.
+* transmission is told to delete the torrent and downloaded files.
 
-transProccessor:
+TransProccessor:
 Executed by transmission when a download is completed. 
 Looks for rar files, etc - extracts them to the extract directory.
-With mencoder, and joinavis enabled, will attempt to join AVI files after extraction.
+With mencoder, and JOIN_AVI (config file) enabled, will attempt to join AVI files after extraction.
 Extracts subtitles, etc.
 Doesnt know how to handle much more than rar files. Creates a symlink if it cant handle the input files.
 
@@ -30,7 +31,20 @@ Edit your transmission daemon settings.json:
 Example:
     "script-torrent-done-enabled": true,
     "script-torrent-done-filename": "/path/to/transprocessor",
+(Dont forget to properly hup/reload transmission, or your changes will not be loaded and will be removed)
 
-RSS Example: (You will have to hack up rss.php, before you bother with this, unless you use the same site i do)
-0,30 * * * * /path/to/rss.php
+RSS Example: 
+	0,30 * * * * /path/to/rss.php -u "http://www.whatever.com/feed.rss"
+rss reader looks for mainly <title> and <link> fields. should work for your rss feed if those are there.
+To see more debug info, /path/to/rss.php -u "http://www.whatever.com/feed.rss" -d 2
+Dont bother adding to cron until you know if it works. 
+
+
+TODO
+Better rar detection
+Use transprocessor to queue all file handling, to make execution instant
+Create handler system (or expand cleanup) to handle transprocessor requests - unrar,joins,etc
+Create a better generic parser, web configurable?, Intial read-in of rss, let user select fields to parse.
+Possibly use sqllite to replace flat files.
+
 

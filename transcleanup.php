@@ -8,6 +8,8 @@ require_once('/home/debian-transmission/.code/includes/class/TransmissionRPC.cla
 $rpc = new TransmissionRPC();
 $rpc->username = '$transmissionUser';
 $rpc->password = '$transmissionPass';
+$rpc->url = '$transmissionUrl';
+
 //$rpc->debug = true;
 $result = $rpc->get();
 $logData = "";

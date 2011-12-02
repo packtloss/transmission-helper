@@ -38,7 +38,6 @@ $ignoredStrings = "/var/transmission/helper/includes/file.ignore.inc.php";
 $minimumDiskSpace = 30;
 
 // Sometimes the rpc gives an empty list, even if there are running torrents - this aborts the rss parser if the list is unavailable.
-// Script will attempt up to 3 retries before giving up.
 // With this disabled, the dupe checker doesnt run.
 $abortRssParser = 1;
 
