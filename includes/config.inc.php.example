@@ -3,11 +3,11 @@
 // Maximum age in days, before a torrent is deleted.
 $maxTorrentAge = 30;
 
-// Mount point data is downloaded to
+// Mount point where data is stored - this is merely for free space checks.
 $downloadDisk = "/";
 
 // Directory that scripts/includes/configs can be found in
-$baseDirectory = "/var/transmission/helper";
+$baseDirectory = "/var/transmission/transmission-helper";
 
 // Place to make symlinks, extract files etc
 $unrarDir = "/var/transmission/extracted";
@@ -17,21 +17,19 @@ $unrarBinary = "/usr/bin/unrar";
 $mencoderBinary = "/usr/bin/mencoder";
 
 //Attempt to join avi files named cd1,cd2? 0 = no, 1 = yes
-$JOIN_AVI = 1;
+$joinAviFiles = 1;
 
 // Transmission Auth info...
-$transmissionUser = "";
-$transmissionPass = "";
+$transmissionUser = "user";
+$transmissionPass = "pass";
 $transmissionUrl = "http://localhost:9091/transmission/rpc";
 
 // Log File
 $logFile = "/var/transmission/helper/log/log.txt";
 
-
 // -- RSS Hunter stuff -- 
 // Config Files - Need to be web read/writable, and readable by whoever execs the rss hunter.
 $allowedShows = "/var/transmission/helper/includes/file.types.inc.php";
-$allowedCategories = "/var/transmission/helper/includes/file.categories.inc.php";
 $ignoredStrings = "/var/transmission/helper/includes/file.ignore.inc.php";
 
 // Percentage of disk to keep free. Will abort RSS hunter if free space is lower than this value
