@@ -29,7 +29,7 @@ if($minimumDiskSpace > $disk['percentfree']) {
 	msg("\nNot enough free disk space.\n",$debugstatus['level'],1);
 	msg("There is only ".$disk['percentfree']." available, where you have ".$minimumDiskSpace."% configured as a minimum\n",$debugstatus['level'],1);
 	msg("Disk Info: ".$disk['used']." (".$disk['percentused'].") used of ".$disk['total']." total - (".$disk['free']." (".$disk['percentfree'].") available)\n\n",$debugstatus['level'],1);
-	msg("[".date('M n g:i:sa')."][HUNTING][ABORTED: Disk Space Low]",$debugstatus['level'],1,$logFile);
+	msg("[".date('M d g:i:sa')."][HUNTING][ABORTED: Disk Space Low]",$debugstatus['level'],1,$logFile);
 	exit();
 }
 
@@ -44,36 +44,36 @@ try
 {
         $torrentList = $rpc->get();
 } catch (Exception $e) {
-	msg("[".date('M n g:i:sa')."][HUNTING][ABORTED: RPC UNAVAILABLE(".$e->getMessage().")]",$debugstatus['level'],1,$logFile);
+	msg("[".date('M d g:i:sa')."][HUNTING][ABORTED: RPC UNAVAILABLE(".$e->getMessage().")]",$debugstatus['level'],1,$logFile);
 	exit();
 }
 // For some reason these sometimes come back empty...will sleep and try again...
 if(!isset($torrentList->arguments->torrents)) {
-	msg("[".date('M n g:i:sa')."][HUNTING][RPC LIST EMPTY 1]",$debugstatus['level'],1,$logFile);
+	msg("[".date('M d g:i:sa')."][HUNTING][RPC LIST EMPTY 1]",$debugstatus['level'],1,$logFile);
 	sleep(2);
 	try
 	{
         	$torrentList = $rpc->get();
 	} catch (Exception $e) {
-        	msg("[".date('M n g:i:sa')."][HUNTING][ABORTED: RPC UNAVAILABLE(".$e->getMessage().")]",$debugstatus['level'],1,$logFile);
+        	msg("[".date('M d g:i:sa')."][HUNTING][ABORTED: RPC UNAVAILABLE(".$e->getMessage().")]",$debugstatus['level'],1,$logFile);
 		exit();
 	}
 	// If it's empty a second time, third time might be a charm....
 	if(!isset($torrentList->arguments->torrents)) {
-        	msg("[".date('M n g:i:sa')."][HUNTING][RPC LIST EMPTY 2]",$debugstatus['level'],1,$logFile);
+        	msg("[".date('M d g:i:sa')."][HUNTING][RPC LIST EMPTY 2]",$debugstatus['level'],1,$logFile);
         	sleep(2);
         	try
         	{
                 	$torrentList = $rpc->get();
         	} catch (Exception $e) {
-                	msg("[".date('M n g:i:sa')."][HUNTING][ABORTED: RPC UNAVAILABLE(".$e->getMessage().")]",$debugstatus['level'],1,$logFile);
+                	msg("[".date('M d g:i:sa')."][HUNTING][ABORTED: RPC UNAVAILABLE(".$e->getMessage().")]",$debugstatus['level'],1,$logFile);
 			exit();
         	}
 		// Three failues....eek.
 		if(!isset($torrentList->arguments->torrents)) {
-                	msg("[".date('M n g:i:sa')."][HUNTING][RPC LIST EMPTY 3]",$debugstatus['level'],1,$logFile);
+                	msg("[".date('M d g:i:sa')."][HUNTING][RPC LIST EMPTY 3]",$debugstatus['level'],1,$logFile);
 			if($abortRssParser==1) {
-				msg("[".date('M n g:i:sa')."][HUNTING][RPC LIST EMPTY (3 Tries)]",$debugstatus['level'],1,$logFile);
+				msg("[".date('M d g:i:sa')."][HUNTING][RPC LIST EMPTY (3 Tries)]",$debugstatus['level'],1,$logFile);
 				exit();
 			}
 
@@ -85,7 +85,7 @@ if(!isset($torrentList->arguments->torrents)) {
 
 $sxml = @simplexml_load_file($xmlPath);
 if($sxml ===  FALSE) {
-	$logData = "[".date('M n g:i:sa')."][HUNTING]";
+	$logData = "[".date('M d g:i:sa')."][HUNTING]";
 	$logData .= "[ABORTED: RSS Unavailable]\n";
 	climsg($logData,$debugstatus['level'],1,$logFile);
 	exit();
@@ -168,7 +168,7 @@ foreach ( $sxml->channel->item as $item ) {
 if ( count( $downloads ) > 0 ) {
 	foreach ( $downloads as $show => $episodes ) {
 		foreach ( $episodes as $episode ) {
-			$logData = "[".date('M n g:i:sa')."][HUNTED!]";
+			$logData = "[".date('M d g:i:sa')."][HUNTED!]";
 			$logData .= "[".$episode->title."]";
       			try {
         			$result = $rpc->add( (string) $episode->link );

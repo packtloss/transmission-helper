@@ -25,8 +25,8 @@ foreach($result->arguments->torrents as $torrentData) {
 	$torrentSize = formatBytes($torrentBytes);
 	$torrentTotal = $torrentTotal+$torrentBytes;
 	if($torrentAge['days'] >$maxTorrentAge || $torrentData->status == 16) {
-		$logData .= "[".date('M n g:i:sa')."][CLEANUP][".$torrentName."]";
-		if($torrentAge['days'] >$maxTorrentAge) { $logData .= "[AGE".$torrentAge['days'].">".$maxTorrentAge."]"; }
+		$logData .= "[".date('M d g:i:sa')."][CLEANUP][".$torrentName."]";
+		if($torrentAge['days'] >$maxTorrentAge) { $logData .= "[AGE: (".$torrentAge['days'].") >".$maxTorrentAge."]"; }
 		if($torrentData->status == 16) { $logData .= "[STOPPED]"; }
 		$removeResult = $rpc->remove( $torrentId, true );
 		$removed+1;
@@ -51,7 +51,8 @@ foreach($result->arguments->torrents as $torrentData) {
 		$logData .= "\n";
 	}
 }
-$logData .= "[".date('M n g:i:sa')."][CLEANUP][Queue Total:".formatBytes($torrentTotal)."][Removed: ".$removed."]\n";
-echo $logData;
-file_put_contents($logFile, $logData, FILE_APPEND | LOCK_EX);
+if($removed >0) {
+	$logData .= "[".date('M d g:i:sa')."][CLEANUP][Queue Total:".formatBytes($torrentTotal)."][Removed: ".$removed."]";
+	msg($logData,$debugstatus['level'],1,$logFile);
+}
 ?>

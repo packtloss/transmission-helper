@@ -2,6 +2,7 @@
 <?php
 require_once(dirname( __FILE__ ).'/includes/config.inc.php');
 require_once(dirname( __FILE__ ).'/includes/functions.general.inc.php');
+require_once(dirname( __FILE__ ).'/includes/functions.cli.inc.php');
 // Environment Variables set by transmission - We dont use them all (yet?)
 $torrentName = $_SERVER['TR_TORRENT_NAME'];
 $torrentHash = $_SERVER['TR_TORRENT_HASH'];
@@ -12,7 +13,7 @@ $torrentDirectory = $_SERVER['TR_TORRENT_DIR'];
 // ---
 $torrentDownloadDir = $torrentDirectory."/".$torrentName;
 $torrentDestination = $unrarDir."/".$torrentName;
-$logData = "[".date('M n g:i:sa')."][EXTRACTOR][".$torrentName."]";
+$logData = "[".date('M d g:i:sa')."][EXTRACTOR][".$torrentName."]";
 $mtime = microtime(); 
 $mtime = explode(" ",$mtime); 
 $mtime = $mtime[1] + $mtime[0]; 
@@ -72,6 +73,6 @@ $mtime = $mtime[1] + $mtime[0];
 $endtime = $mtime; 
 $totaltime = ($endtime - $starttime); 
 $logData .= "[".substr($totaltime,0,5)."s]\n";
-file_put_contents($logFile, $logData, FILE_APPEND | LOCK_EX);
+msg($logData,$debugstatus['level'],1,$logFile);
 ?>
 
